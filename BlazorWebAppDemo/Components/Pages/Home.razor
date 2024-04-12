@@ -1,39 +1,27 @@
 ﻿@page "/"
+@using BlazorWebAppDemo.Components.Pages
 @using BlazorWebAppDemo.Components.Pages.ContactComponents
 
-@foreach (var contact in contacts)
-{
-	<ContactComponent01></ContactComponent01>
-}
+<h1>Home Page</h1><br />
 
-@code {
-	private List<Contact> contacts;
 
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
+@* <input type="checkbox" @onchange="@(() => {DisplayEmail = !DisplayEmail;})" /><label>Display Email</label>  *@
 
-		contacts = new List<Contact>
-		{
-			new Contact
-			{
-				FirstName = "John",
-				LastName = "Thmas",
-				Email = "john@gmail.com"
-			},
-			new Contact
-			{
-				FirstName = "Peter",
-				LastName = "Bob",
-				Email = "peter@gmail.com"
-			},
-			new Contact
-			{
-				FirstName = "George",
-				LastName = "David",
-				Email = "george@gmail.com"
-			}
-		};
+<ContactList Contacts="contacts">
+	<NullContacts>
+		<br />
+		<span>Contacts are loading...(from Index Razor)</span>
+		<br />
+	</NullContacts>
+	
+	<EmptyContacts>
+		<br />
+		<span>No Contacts to display (from Index Razor)</span>
+		<br />
+	</EmptyContacts>
+</ContactList>
 
-	}
-}
+<br />
+
+<MyTextbox @attributes = "@MyTextboxAttributes" ></MyTextbox>
+
