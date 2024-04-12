@@ -1,4 +1,4 @@
-﻿
+﻿@rendermode InteractiveServer
 
 @* <input type="checkbox" @onchange="@(() => { DisplayEmail = !DisplayEmail; })" /><label>Display Email</label> *@
 @* 데이터바인딩 *@
@@ -15,15 +15,13 @@
 
 	@* <ContactComponent1 FirstName="@contact.FirstName" LastName="@contact.LastName" Email="@contact.Email"></ContactComponent1> *@
 
-	<ContactComponent1 CurrentContact="contacts"></ContactComponent1>
-
 	<ContactComponent1 CurrentContact="contact" DisplayEmail="@DisplayEmail" DeleteCurrentContact="DeleteContact"></ContactComponent1>
 }
 
 @code {
 	[Parameter]
-	public List<Contact> Contacts { get; set; }
-	privata bool DisplayEmail = true;
+	public List<Contact> contacts { get; set; }
+	private bool DisplayEmail = true;
 
 	// 삭제할 연락처 식별필요 == 연락처 개체 자체를 매개변수 파일로 메서드에 전달
 	private void DeleteContact(Contact contact)

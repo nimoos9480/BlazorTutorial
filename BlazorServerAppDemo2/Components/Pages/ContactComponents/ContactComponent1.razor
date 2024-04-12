@@ -1,4 +1,6 @@
-﻿@* <p>
+﻿@rendermode InteractiveServer
+
+@* <p>
 	<b>Name: </b> <span>@FirstName @LastName </span><br />
 	<b>Email: </b><i>@Email</i>
 </p> *@
@@ -33,7 +35,7 @@
 
 	// 매개변수로 전달하지 않고 모델클래스가 전달
 	[Parameter]
-	public Contact? CurrentContact { get; set; }
+	public Contact CurrentContact { get; set; }
 	// 임의의 매개변수를 전달 ==> public 변수를 선언하고 이 매개변수 속성을 제공하는 것
 
 	[Parameter]
