@@ -1,0 +1,36 @@
+﻿@rendermode InteractiveServer
+
+<p>
+	<b>Name: </b> <span>@CurrentContact.FirstName @CurrentContact.LastName</span><br />
+
+	@if (DisplayEmail)
+	{
+		<b>Email: </b> <i>@CurrentContact.Email</i>
+
+		<br />
+	}
+	
+	
+	@if (displayInfo)
+	{
+		<span>The Email Address of @CurrentContact.FirstName @CurrentContact.LastName is @CurrentContact.Email</span>
+	}
+	<br />
+	<button @onclick="@(() => {displayInfo = !displayInfo;})">Show Info</button>
+	<button @onclick="@(() => DeleteCurrentContact.InvokeAsync(CurrentContact))">Delete</button>
+</p>
+
+@code {
+	
+
+	[Parameter]
+	public Contact CurrentContact { get; set; }
+
+	[Parameter]
+	public bool DisplayEmail{ get; set; }
+
+	[Parameter]
+	public EventCallback<Contact> DeleteCurrentContact{ get; set; }
+
+	private bool displayInfo = false;
+}

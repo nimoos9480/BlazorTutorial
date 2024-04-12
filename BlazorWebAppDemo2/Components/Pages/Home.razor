@@ -1,0 +1,27 @@
+﻿@page "/"
+@using BlazorWebAppDemo.Components.Pages
+@using BlazorWebAppDemo.Components.Pages.ContactComponents
+
+<h1>Home Page</h1><br />
+
+
+@* <input type="checkbox" @onchange="@(() => {DisplayEmail = !DisplayEmail;})" /><label>Display Email</label>  *@
+
+<ContactList Contacts="contacts">
+	<NullContacts>
+		<br />
+		<span>Contacts are loading...(from Index Razor)</span>
+		<br />
+	</NullContacts>
+	
+	<EmptyContacts>
+		<br />
+		<span>No Contacts to display (from Index Razor)</span>
+		<br />
+	</EmptyContacts>
+</ContactList>
+
+<br />
+
+<MyTextbox @attributes = "@MyTextboxAttributes" ></MyTextbox>
+
