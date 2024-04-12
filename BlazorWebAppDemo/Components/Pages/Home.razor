@@ -1,0 +1,39 @@
+﻿@page "/"
+@using BlazorWebAppDemo.Components.Pages.ContactComponents
+
+@foreach (var contact in contacts)
+{
+	<ContactComponent01></ContactComponent01>
+}
+
+@code {
+	private List<Contact> contacts;
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+
+		contacts = new List<Contact>
+		{
+			new Contact
+			{
+				FirstName = "John",
+				LastName = "Thmas",
+				Email = "john@gmail.com"
+			},
+			new Contact
+			{
+				FirstName = "Peter",
+				LastName = "Bob",
+				Email = "peter@gmail.com"
+			},
+			new Contact
+			{
+				FirstName = "George",
+				LastName = "David",
+				Email = "george@gmail.com"
+			}
+		};
+
+	}
+}

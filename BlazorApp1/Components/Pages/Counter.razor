@@ -1,0 +1,46 @@
+﻿@page "/counter"
+@rendermode InteractiveServer
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Plus</button>
+<button class="btn btn-primary" @onclick="DecrementCount">Minus</button>
+
+@code {
+    private int currentCount = 0;
+
+    @* private void IncrementCount()
+    {
+        currentCount++;
+    } *@
+
+    [Parameter]
+    public int IncrementAmount { get; set; } = 1;
+    private void IncrementCount()
+    {
+        currentCount+= IncrementAmount;
+    }
+
+    @* private void DecrementCount()
+    {
+        if (currentCount > 0)
+        {
+            currentCount--;
+        }
+
+    }*@
+
+    [Parameter]
+    public int DecrementAmount { get; set; } = 1;
+    public void DecrementCount()
+    {
+        if (currentCount > 0)
+        {
+            currentCount -= DecrementAmount;
+        }   
+    }
+}

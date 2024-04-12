@@ -1,0 +1,81 @@
+﻿@page "/"
+		@* 사용자가 애플리케이션에 액세스할 때 로드되는 초기페이지 or 루트페이지 *@
+
+<h3>Hello, @GetUserName()... Welcome to our <b> Application</b> </h3>
+
+<p>Sum: @GetSum() </p>
+@* 명시적 선언 *@
+<p>Sum: @(2 + 2) </p>
+									@* <p>Sum: @2 + 2 </p> 는 안됨을 주의*@
+
+<h3>Hello, @userName ... Welcome to our <b> Application</b> </h3>
+<button @onclick="ChangeName">ChangeName</button> 
+@* 명시적 선언 *@
+<button @onclick="@(() => {userName = "Peter";})">ChangeName2</button>
+
+@if (testNum == 1)
+{
+	<p>Num is 1</p>
+} else
+{
+	<p>Num is not 1</p>
+}
+
+@for (int i = 0; i < 10; i++)
+{
+	<p>Value of i: @i</p>	
+}
+
+@foreach (var name in names)
+{
+	@* <p>@name</p> *@
+	<p>@((MarkupString)name)</p>
+}
+
+@code{
+	// 1. 비공개 변수, 비공개 문자열 사용자를 선언
+	private string userName = "Jhon";
+
+	// 3. 사용자 유형 또는 사용자 유형이 아닌 비공개 변수를 하나 더 생성 (루프 및 if조건 확인)
+	private int testNum = 10;
+
+	// 4. 비공개 문자열 목록을 선언
+	private List<string> names;
+
+	// 초기화 시 하나의 이벤트를 덮어쓸 수 있음
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		// 초기화 된 모든 이벤트 == razor 페이지가 로드되면 실행될 이벤트
+		names = new List<string>
+		{
+			"<b>Value of 01</b>",
+			"Value of 02",
+			"Value of 03",
+			"<i>Value of 04</i>",
+			"Value of 05",
+			"Value of 06",
+			"Value of 07",
+			"Value of 08",
+			"Value of 09"
+		};					
+	}
+
+
+	// 2. 함수를 생성
+	private string GetUserName()
+	{
+		return userName + " Thomas";	
+	}
+
+	private void ChangeName()
+	{
+		userName = "Peter";
+	}
+
+	private int GetSum()
+	{
+		return 2 + 2;
+	}
+
+}

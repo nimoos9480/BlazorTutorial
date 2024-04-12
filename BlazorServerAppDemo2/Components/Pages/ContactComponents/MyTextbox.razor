@@ -1,0 +1,13 @@
+﻿@* <input placeholder="@placeholder" /> *@
+<input @attributes="CustomAttributes" />
+
+@code {
+	/*[Parameter]
+	public string placeholder { get; set; }*/
+
+	// 객체의 문자열과 값유형을 사용해 public 변수 선언하고 이를 사용자 정의로 선언
+	// CaptureUnmatchedValues : 일치하지 않는 값도 캡처되도록 true 선언 
+	[Parameter(CaptureUnmatchedValues = true)]
+	public Dictionary<string, object>? CustomAttributes { get; set; }
+
+}

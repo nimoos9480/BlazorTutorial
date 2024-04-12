@@ -1,0 +1,56 @@
+﻿@page "/"
+@using BlazorServerAppDemo2.Components.Pages.ContactComponents
+
+<ContactList Contacts="contacts"></ContactList>
+
+<br />
+
+@* <MyTextbox placeholder="Sample Placeholder"></MyTextbox> *@
+
+@* 텍스트 필드에서 해당 항목을 제거하고 직접 placeholder 제공 *@
+@* <MyTextbox placeholder="Placeholder 01" type="text" disabled="disabled"></MyTextbox> *@
+
+@* 임의의 매개변수 설정 메소드로 전달 *@
+@* <MyTextbox @attributes="@(new Dictionary<string, object> { {"disabled", "disabled"}, {"placeholder", "Contact Name"}, {"type", "text"} })"></MyTextbox> *@
+
+<MyTextbox @attributes="@MyTextboxAttributes"></MyTextbox>
+
+
+@code {
+	private List<Contact> contacts;
+
+	// 명시적 선언으로 문자열의 변수 개인 사전을 만들기
+	private Dictionary<string, object> MyTextboxAttributes = new Dictionary<string, object>
+	{
+		{"placeholder", "First Name"},
+		{"disabled", "disabled"}
+	};
+
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+
+		contacts = new List<Contact>
+		{
+			new Contact
+			{
+				FirstName = "John",
+				LastName = "Thomas",
+				Email = "john@gmail.com"
+			},
+			new Contact
+			{
+				FirstName = "Peter",
+				LastName = "Bob",
+				Email = "peter@gmail.com"
+			},
+			new Contact
+			{
+				FirstName = "George",
+				LastName = "David",
+				Email = "george@gmail.com"
+			},
+		};
+	}
+}
