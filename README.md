@@ -1,12 +1,12 @@
 ### 목차
-- [기초 지식](#기초지식)
+- [기초 지식](#기초_지식)
 - [종속성 주입](#종속성(Dependancy_Injection)_주입)
 
 <br />
 <br />
 <br />
 
-# 기초지식  
+# 기초 지식  
 ## **@page directive**
 
 ```csharp
