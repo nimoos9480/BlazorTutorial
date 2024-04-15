@@ -1,0 +1,26 @@
+﻿@page "/demo02"
+@inject IContactService contactService
+
+<h3>Demo02</h3>
+
+@* demo01 에서 생성한 데이터를 demo02 에서도 확인가능 ==> 애플리케이션이 종료될때가지 유효  *@
+@if (contactService.GetContacts().Count == 0)
+{
+	<b>No Contacts to display</b>
+}
+else
+{
+	@foreach (var contact in contactService.GetContacts())
+	{
+		<b>@contact.FirstName @contact.LastName</b>
+		<br />
+		<i>@contact.Email</i>
+		<br />
+		<hr />
+	}
+}
+
+
+@code {
+
+}
