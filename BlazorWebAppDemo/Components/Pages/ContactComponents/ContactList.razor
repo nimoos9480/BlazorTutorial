@@ -1,6 +1,4 @@
-﻿@inject IJSRuntime js
-
-<input type="checkbox" @bind="DisplayEmail" /><label>Display Email</label>
+﻿<input type="checkbox" @bind="DisplayEmail" /><label>Display Email</label>
 
 @if (Contacts is null)
 {
@@ -32,13 +30,8 @@ else
 	public List<Contact> Contacts { get; set; }
 	private bool DisplayEmail = true;
 
-	private async Task DeleteContact(Contact contact)
+	private void DeleteContact(Contact contact)
 	{
-		var confirm = await js.InvokeAsync<bool>("confirm", $"{contact.FirstName} {contact.LastName} 을 리스트에서 삭제하시겠습니까?");
-		if(confirm)
-		{
-			Contacts.Remove(contact);
-		}
-		
+		Contacts.Remove(contact);
 	}
 }
