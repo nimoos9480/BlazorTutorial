@@ -1,6 +1,6 @@
 ### 목차
 - [기초 지식](#기초지식)
-- [종속성 주입](#종속성(Dependancy Injection)_주입)
+- [종속성 주입](#종속성(Dependancy_Injection)_주입)
 
 <br />
 <br />
