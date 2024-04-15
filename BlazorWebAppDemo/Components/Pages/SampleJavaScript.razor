@@ -1,0 +1,36 @@
+﻿@page "/sample-js"
+@inject IJSRuntime jsRuntime
+@rendermode InteractiveServer
+
+
+<h3>Sample JavaScript</h3>
+
+<button @onclick="ShowAlert">Alert</button>
+<br /><br />
+<sapn>@confirmResult</sapn>
+<button @onclick="ShowConfirm">Confirm</button>
+
+<button onclick="callMethod()">Call Method</button>
+
+@code {
+	private string confirmResult;
+
+	private void ShowAlert()
+	{
+		// 자바스크립트 함수에서 값을 반환하지 않는 경우에 사용됨
+		// alert('message'); 구현
+		jsRuntime.InvokeVoidAsync("alert", "Hello, World from C# Method");
+	}
+
+	private async Task ShowConfirm()
+	{
+		var result = await jsRuntime.InvokeAsync<bool>("confirm", "Do you need to proceed?");
+		confirmResult = result.ToString();
+	}
+
+	[JSInvokable]
+	public static Task<string> GetValueFromMethod()
+	{
+		return Task.FromResult<string>("Hello World");
+	}
+}
