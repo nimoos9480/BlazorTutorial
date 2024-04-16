@@ -1,0 +1,76 @@
+﻿@page "/editgame"
+@inject NavigationManager NavigationManager
+@inject GamesClient GamesClient
+@inject GenresClient GenresClient
+
+<PageTitle>New Game</PageTitle>
+<h3>NEW GAME </h3>
+
+@if (genres is null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<div class="row">
+		<div class="col-md-5">
+			<EditForm Model="@game" FormName="editGame" OnValidSubmit="@HandleSubmit">
+				<DataAnnotationsValidator />  @* 유효성 검사기 *@
+				<ValidationSummary />
+				<div class="mb-3">
+					<label for="name" class="form-label">Name : </label>
+					<InputText id="name" @bind-Value="game.Name" class="form-control" />
+					<ValidationMessage For="() => game.Name"/>
+				</div>
+				<div class="mb-3">
+					<label for="genre" class="form-label">Genre : </label>
+					<InputSelect id="genre" @bind-Value="game.GenreId" class="form-select">
+						<option value="">=== Select a genre ===</option>
+						@foreach (var genre in genres)
+						{
+							<option value="@genre.Id">@genre.Name</option>
+						}
+					</InputSelect>
+					<ValidationMessage For="() => game.GenreId" />
+				</div>
+				<div class="mb-3">
+					<label for="price" class="form-label">Price : </label>
+					<InputNumber id="price" @bind-Value="game.Price" class="form-control" />
+					<ValidationMessage For="() => game.Price" />
+				</div>
+				<div class="mb-3">
+					<label for="releaseDate" class="form-label">Release Date : </label>
+					<InputDate id="releaseDate" @bind-Value="game.ReleaseDate" class="form-control" />
+				</div>
+				<button type="submit" class="btn btn-primary">등록</button>
+				<a role="button" class="btn btn-secondary" href="/">취소</a>
+			</EditForm>
+		</div>
+	</div>
+}
+
+
+@code {
+	// HTTP 요청에서 폼 데이터를 가져와 컴포넌트의 매개변수에 바인딩하는 데 사용
+	[SupplyParameterFromForm]
+	// 컴포넌트가 초기화될 때 해당 게임 정보를 기본값으로 설정 가능함
+	private GameDetails game { get; set; } = new()
+		{
+			Name = string.Empty,
+			ReleaseDate = DateOnly.FromDateTime(DateTime.UtcNow)
+		};
+
+
+	private Genre[]? genres;
+
+	protected override void OnInitialized()
+	{
+		genres = GenresClient.GetGenres();
+	}
+
+	private void HandleSubmit()
+	{
+		GamesClient.AddGame(game);
+		NavigationManager.NavigateTo("/");   // 추가 후 홈화면으로 이동하는 로직
+	}
+}

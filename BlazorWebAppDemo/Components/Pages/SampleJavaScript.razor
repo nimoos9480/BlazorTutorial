@@ -9,8 +9,13 @@
 <br /><br />
 <sapn>@confirmResult</sapn>
 <button @onclick="ShowConfirm">Confirm</button>
+<br />
+<br />
 
 <button onclick="callMethod()">Call Method</button>
+<br />
+<br />
+<button @onclick="CallInvokeMethodJavascript">Call Instance Method</button>
 
 @code {
 	private string confirmResult;
@@ -26,6 +31,19 @@
 	{
 		var result = await jsRuntime.InvokeAsync<bool>("confirm", "Do you need to proceed?");
 		confirmResult = result.ToString();
+	}
+
+	private async Task CallInvokeMethodJavascript()
+	{
+		 // var contact = new Contact { FirstName = "John" };
+		 // await jsRuntime.InvokeVoidAsync("callInstanceMethod", DotNetObjectReference.Create(contact)); // 작동X => 함수처럼 호출 메서드를 갖고 있지 않기 때문
+		 await jsRuntime.InvokeVoidAsync("callInstanceMethod", DotNetObjectReference.Create(this));
+	}
+
+	[JSInvokable]
+	public async Task<string> GetValueFromInstance()
+	{
+			return "Hello World from Instance";
 	}
 
 	[JSInvokable]

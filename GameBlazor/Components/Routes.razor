@@ -1,0 +1,11 @@
+﻿<Router AppAssembly="typeof(Program).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>
+</Router>
+
+
+@*Razor 컴포넌트에서 사용되는 라우팅을 정의하는 파일 
+                    == 애플리케이션의 경로에 따라 어떤 Razor 페이지나 컴포넌트를 렌더링할지를 결정함
+                    => 주어진 URL 경로에 따라 특정 Razor 페이지나 컴포넌트를 렌더링 *@

@@ -1,0 +1,50 @@
+﻿@page "/"
+@inject GamesClient Client   // 종속성 주입
+
+<PageTitle>Game Catalog</PageTitle>
+
+<div class="mt-2">
+	<a class="btn btn-primary" role="button" href="/editgame">New Game</a>
+</div>
+
+@if (games is null)
+{
+		<p><em>Loading...</em></p>
+} else
+{
+	<table class="table table-striped table-bordered table-hover mt-3">
+		<thead class="table-dark">
+			<th>Id</th>
+			<th>Name</th>
+			<th>Genre</th>
+			<th class="text-end">Price</th>
+			<th>Release Date</th>
+			<th></th>
+		</thead>
+		<tbody>
+			@foreach (var game in games)
+			{
+				<tr>
+					<td>@game.Id</td>
+					<td>@game.Name</td>
+					<td>@game.Genre</td>
+					<td class="text-end">@game.Price.ToString("C2")</td> @* ToString("C2") 메서드 호출은 숫자를 통화 형식으로 포맷하도록 지정 *@
+					<td>@game.ReleaseDate</td>
+					<td></td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code {
+
+	// GameSummary 렌더링
+	private GameSummary[]? games;
+
+	protected override void OnInitialized()
+	{
+		games = Client.GetGames();
+	}
+
+}

@@ -10,7 +10,7 @@ namespace BlazorWebAppDemo.Components.Pages
 	public partial class Home
 	{
 
-		/* 종속성 주입을 사용하는 방법 */
+		/* 의존성 주입을 사용하는 방법 */
 		[Inject]
 		IContactService contactService { get; set; }
 
