@@ -1,4 +1,6 @@
 ﻿@page "/editgame"
+@page "/editgame/{id:int}"
+
 @inject NavigationManager NavigationManager
 @inject GamesClient GamesClient
 @inject GenresClient GenresClient
@@ -6,7 +8,7 @@
 <PageTitle>New Game</PageTitle>
 <h3>NEW GAME </h3>
 
-@if (genres is null)
+@if (genres is null || game is null)
 {
 	<p><em>Loading...</em></p>
 }
@@ -51,17 +53,37 @@ else
 
 
 @code {
+	[Parameter]
+	public int? Id { get; set; }
+
 	// HTTP 요청에서 폼 데이터를 가져와 컴포넌트의 매개변수에 바인딩하는 데 사용
 	[SupplyParameterFromForm]
 	// 컴포넌트가 초기화될 때 해당 게임 정보를 기본값으로 설정 가능함
-	private GameDetails game { get; set; } = new()
-		{
-			Name = string.Empty,
-			ReleaseDate = DateOnly.FromDateTime(DateTime.UtcNow)
-		};
-
+	private GameDetails? game { get; set; } 
 
 	private Genre[]? genres;
+
+	protected override void OnParametersSet()
+	{
+		if (game is not null)
+		{
+			return;	
+		}
+
+		if (Id is not null)
+		{
+			game = GamesClient.GetGame(Id.Value);
+		}
+		else
+		{
+			game = new()
+				{
+					Name = string.Empty,
+					ReleaseDate = DateOnly.FromDateTime(DateTime.UtcNow)
+				};
+
+		}
+	}
 
 	protected override void OnInitialized()
 	{
@@ -70,6 +92,7 @@ else
 
 	private void HandleSubmit()
 	{
+		ArgumentNullException.ThrowIfNull(game);
 		GamesClient.AddGame(game);
 		NavigationManager.NavigateTo("/");   // 추가 후 홈화면으로 이동하는 로직
 	}
