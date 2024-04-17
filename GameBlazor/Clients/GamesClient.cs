@@ -41,21 +41,26 @@ namespace GameBlazor.Clients
 		public GameSummary[] GetGames() => [.. games];
 		// == games.ToArray()
 
-		public void AddGame(GameDetails game) 
+		public void AddGame(GameDetails game)
 		{
-			ArgumentException.ThrowIfNullOrWhiteSpace(game.GenreId);
-			var genre = genres.Single(genre => genre.Id == int.Parse(game.GenreId));
+			Genre genre = GetGenreById(game);
 
 			var gameSummary = new GameSummary
 			{
-				Id =games.Count + 1,
+				Id = games.Count + 1,
 				Name = game.Name,
 				Genre = genre.Name,
-				Price = game.Price,	
+				Price = game.Price,
 				ReleaseDate = game.ReleaseDate
 			};
 
 			games.Add(gameSummary);
+		}
+
+		private Genre GetGenreById(string? id)
+		{
+			ArgumentException.ThrowIfNullOrWhiteSpace(id);
+			return genres.Single(genre => genre.Id == int.Parse(id));
 		}
 
 		public GameDetails GetGame(int id)

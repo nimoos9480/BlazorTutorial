@@ -5,8 +5,8 @@
 @inject GamesClient GamesClient
 @inject GenresClient GenresClient
 
-<PageTitle>New Game</PageTitle>
-<h3>NEW GAME </h3>
+<PageTitle>@title</PageTitle>
+<h3>@title </h3>
 
 @if (genres is null || game is null)
 {
@@ -60,8 +60,8 @@ else
 	[SupplyParameterFromForm]
 	// 컴포넌트가 초기화될 때 해당 게임 정보를 기본값으로 설정 가능함
 	private GameDetails? game { get; set; } 
-
 	private Genre[]? genres;
+	private string title = string.Empty;
 
 	protected override void OnParametersSet()
 	{
@@ -73,6 +73,7 @@ else
 		if (Id is not null)
 		{
 			game = GamesClient.GetGame(Id.Value);
+			title = $"Edit {game.Name}";
 		}
 		else
 		{
@@ -81,7 +82,7 @@ else
 					Name = string.Empty,
 					ReleaseDate = DateOnly.FromDateTime(DateTime.UtcNow)
 				};
-
+				title = "New Game";
 		}
 	}
 
