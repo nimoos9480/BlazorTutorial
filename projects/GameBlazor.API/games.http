@@ -2,26 +2,26 @@
 GET http://localhost:5163/games
 
 ###
-GET http://localhost:5163/games/4
+GET http://localhost:5163/games/2
 
 ###
 POST  http://localhost:5163/games
 Content-Type: application/json
 
 {
-  "name": "Minecraft",
-  "genre": "Kids and Family",
-   "price": 19.99,
-  "releaseDate": "2011-11-18"
+  "name": "Super Mario Bros 3",
+  "genreId": 5,
+  "price": 19.99,
+  "releaseDate": "1988-10-13"
 }
 
 ###
-PUT http://localhost:5163/games/1
+PUT http://localhost:5163/games/2
 Content-Type:application/json
 
 {
     "name": "Street Fighter II Turbo",
-    "genre": "Fighting",
+    "genreId": "1",
     "price": 9.99,
     "releaseDate": "1991-02-01"
 }

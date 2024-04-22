@@ -18,7 +18,7 @@ namespace GameBlazor.API.Data.Migrations
                 values: new object[,]
                 {
                     { 1, "Fighting" },
-                    { 2, "Releplaying" },
+                    { 2, "Roleplaying" },
                     { 3, "Sports" },
                     { 4, "Racing" },
                     { 5, "Kids and Family" }

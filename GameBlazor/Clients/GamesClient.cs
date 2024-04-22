@@ -5,10 +5,10 @@ using System.Text.RegularExpressions;
 
 namespace GameBlazor.Clients
 {
-	public class GamesClient
+	public class GamesClient (HttpClient httpClient)
 	{
-				// readonly = 수정되지 않도록 보호
-		private readonly List<GameSummary> games = 
+		// readonly = 수정되지 않도록 보호
+		/*private readonly List<GameSummary> games = 
 	[
 		new()
 		{
@@ -35,15 +35,18 @@ namespace GameBlazor.Clients
 			ReleaseDate = new DateOnly(2022, 9, 27)
 		}
 
-	];
+	];*/
 
-		private readonly Genre[] genres = new GenresClient().GetGenres();
-		public GameSummary[] GetGames() => [.. games];
-		// == games.ToArray()
+		/*private readonly Genre[] genres = new GenresClient(httpClient).GetGenres();
 
-		public void AddGame(GameDetails game)
+		public async Task<GameSummary[]> GetGamesAsync()
+		     => await   httpClient.GetFromJsonAsync<GameSummary[]>("games") ?? [];*/
+		// ?? []는 null 병합 연산자로, 만약 GetFromJsonAsync 메서드가 null을 반환하면 빈 배열을 반환
+		//  [.. games]; == games.ToArray()
+
+		/*public void AddGame(GameDetails game)
 		{
-			Genre genre = GetGenreById(game);
+			Genre genre = GetGenreById(game.GenreId);
 
 			var gameSummary = new GameSummary
 			{
@@ -81,6 +84,28 @@ namespace GameBlazor.Clients
 				Price = game.Price,
 				ReleaseDate = game.ReleaseDate
 			};
+
+		public void DeleteGame(int id) 
+		{
+			var game = GetGameSummaryById(id);
+			games.Remove(game);
 		}
+		}*/
+
+		public async Task<GameSummary[]> GetGamesAsync()
+	=> await httpClient.GetFromJsonAsync<GameSummary[]>("games") ?? [];
+
+		public async Task AddGameAsync(GameDetails game)
+			=> await httpClient.PostAsJsonAsync("games", game);
+
+		public async Task<GameDetails> GetGameAsync(int id)
+			=> await httpClient.GetFromJsonAsync<GameDetails>($"games/{id}")
+				?? throw new Exception("Could not find game!");
+
+		public async Task UpdateGameAsync(GameDetails updatedGame)
+			=> await httpClient.PutAsJsonAsync($"games/{updatedGame.Id}", updatedGame);
+
+		public async Task DeleteGameAsync(int id)
+			=> await httpClient.DeleteAsync($"games/{id}");
 	}
 }

@@ -1,5 +1,6 @@
 ﻿@page "/editgame"
 @page "/editgame/{id:int}"
+@rendermode InteractiveServer
 
 @inject NavigationManager NavigationManager
 @inject GamesClient GamesClient
@@ -15,19 +16,23 @@
 else
 {
 	<div class="row">
-		<div class="col-md-5">
-			<EditForm Model="@game" FormName="editGame" OnValidSubmit="@HandleSubmit">
+		<div class="col-md-4">
+			<EditForm Model="@game"
+					  FormName="editGame"
+					  OnValidSubmit="HandleSubmitAsync"
+					  Enhance>
 				<DataAnnotationsValidator />  @* 유효성 검사기 *@
 				<ValidationSummary />
 				<div class="mb-3">
-					<label for="name" class="form-label">Name : </label>
+					<label for="name" class="form-label">Name:</label>
 					<InputText id="name" @bind-Value="game.Name" class="form-control" />
-					<ValidationMessage For="() => game.Name"/>
+					<ValidationMessage For="() => game.Name" />
 				</div>
+
 				<div class="mb-3">
-					<label for="genre" class="form-label">Genre : </label>
+					<label for="genre" class="form-label">Genre:</label>
 					<InputSelect id="genre" @bind-Value="game.GenreId" class="form-select">
-						<option value="">=== Select a genre ===</option>
+						<option value="">Select a genre</option>
 						@foreach (var genre in genres)
 						{
 							<option value="@genre.Id">@genre.Name</option>
@@ -36,12 +41,12 @@ else
 					<ValidationMessage For="() => game.GenreId" />
 				</div>
 				<div class="mb-3">
-					<label for="price" class="form-label">Price : </label>
+					<label for="price" class="form-label">Price:</label>
 					<InputNumber id="price" @bind-Value="game.Price" class="form-control" />
 					<ValidationMessage For="() => game.Price" />
 				</div>
 				<div class="mb-3">
-					<label for="releaseDate" class="form-label">Release Date : </label>
+					<label for="releaseDate" class="form-label">Release Date:</label>
 					<InputDate id="releaseDate" @bind-Value="game.ReleaseDate" class="form-control" />
 				</div>
 				<button type="submit" class="btn btn-primary">등록</button>
@@ -63,16 +68,16 @@ else
 	private Genre[]? genres;
 	private string title = string.Empty;
 
-	protected override void OnParametersSet()
+	protected override async Task OnParametersSetAsync()
 	{
 		if (game is not null)
 		{
-			return;	
+			return;
 		}
 
 		if (Id is not null)
 		{
-			game = GamesClient.GetGame(Id.Value);
+			game = await GamesClient.GetGameAsync(Id.Value);
 			title = $"Edit {game.Name}";
 		}
 		else
@@ -82,19 +87,30 @@ else
 					Name = string.Empty,
 					ReleaseDate = DateOnly.FromDateTime(DateTime.UtcNow)
 				};
-				title = "New Game";
+
+			title = "New Game";
 		}
 	}
 
-	protected override void OnInitialized()
+	protected override async Task OnInitializedAsync()
 	{
-		genres = GenresClient.GetGenres();
+		genres = await GenresClient.GetGenresAsync();
 	}
 
-	private void HandleSubmit()
+	private async Task HandleSubmitAsync()
 	{
 		ArgumentNullException.ThrowIfNull(game);
-		GamesClient.AddGame(game);
-		NavigationManager.NavigateTo("/");   // 추가 후 홈화면으로 이동하는 로직
+
+		if (Id is null)
+		{
+			await GamesClient.AddGameAsync(game);
+		}
+		else
+		{
+			game.Id = Id.Value;
+			await GamesClient.UpdateGameAsync(game);
+		}
+
+		NavigationManager.NavigateTo("/");  // 추가 후 홈화면으로 이동하는 로직
 	}
 }

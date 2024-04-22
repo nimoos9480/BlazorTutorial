@@ -7,11 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 var connString = builder.Configuration.GetConnectionString("GameStore");    // appsettings.json 연결 문자열
 builder.Services.AddSqlite<GameStoreContext>(connString);
 
-
 var app = builder.Build();
 
 app.MapGamesEndpoints();
+app.MapGenresEndpoints();
 
-app.MigrateDb();
+await app.MigrateDbAsync();
 
 app.Run();
