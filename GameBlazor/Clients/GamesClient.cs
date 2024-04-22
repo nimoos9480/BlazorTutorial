@@ -37,14 +37,15 @@ namespace GameBlazor.Clients
 
 	];*/
 
-		/*private readonly Genre[] genres = new GenresClient(httpClient).GetGenres();
+		/*private readonly Genre[] genres = new GenresClient(httpClient).GetGenres();*/
 
 		public async Task<GameSummary[]> GetGamesAsync()
-		     => await   httpClient.GetFromJsonAsync<GameSummary[]>("games") ?? [];*/
-		// ?? []는 null 병합 연산자로, 만약 GetFromJsonAsync 메서드가 null을 반환하면 빈 배열을 반환
+		     => await   httpClient.GetFromJsonAsync<GameSummary[]>("games") ?? [];
+																																	// ?? []는 null 병합 연산자로, 만약 GetFromJsonAsync 메서드가 null을 반환하면 빈 배열을 반환
 		//  [.. games]; == games.ToArray()
 
-		/*public void AddGame(GameDetails game)
+		/*
+		 * public void AddGame(GameDetails game)
 		{
 			Genre genre = GetGenreById(game.GenreId);
 
@@ -52,20 +53,19 @@ namespace GameBlazor.Clients
 			{
 				Id = games.Count + 1,
 				Name = game.Name,
-				Genre = genre.Name,
+				Genre = genre.Name, 
 				Price = game.Price,
 				ReleaseDate = game.ReleaseDate
 			};
 
 			games.Add(gameSummary);
-		}
+		}*/
 
-		private Genre GetGenreById(string? id)
-		{
-			ArgumentException.ThrowIfNullOrWhiteSpace(id);
-			return genres.Single(genre => genre.Id == int.Parse(id));
-		}
+			public async Task AddGameAsync(GameDetails game)
+					=> await httpClient.PostAsJsonAsync("games", game);
 
+
+		/*
 		public GameDetails GetGame(int id)
 		{
 			GameSummary? game = games.Find(game => game.Id == id);
@@ -92,20 +92,47 @@ namespace GameBlazor.Clients
 		}
 		}*/
 
-		public async Task<GameSummary[]> GetGamesAsync()
-	=> await httpClient.GetFromJsonAsync<GameSummary[]>("games") ?? [];
-
-		public async Task AddGameAsync(GameDetails game)
-			=> await httpClient.PostAsJsonAsync("games", game);
-
 		public async Task<GameDetails> GetGameAsync(int id)
 			=> await httpClient.GetFromJsonAsync<GameDetails>($"games/{id}")
-				?? throw new Exception("Could not find game!");
+																										?? throw new Exception("게임을 찾을 수 없습니다!");
+
+
+/*		public void UpdateGame(GameDetails updateGame) 
+		{ 
+			var genre = GetGenreById(updateGame.GenreId);
+			GameSummary existingGame = GetGameSummaryById(updateGame.Id);
+
+			existingGame.Name = updateGame.Name;
+			existingGame.Genre = genre.Name;
+			existingGame.Price = existingGame.Price;
+			existingGame.ReleaseDate = updateGame.ReleaseDate;	
+		}*/
 
 		public async Task UpdateGameAsync(GameDetails updatedGame)
 			=> await httpClient.PutAsJsonAsync($"games/{updatedGame.Id}", updatedGame);
 
+/*		public void DeleteGame(int id)
+		{
+			var game = GetGameSummaryById(id);
+			GamesClient.Remove(game);
+		}*/
+
 		public async Task DeleteGameAsync(int id)
 			=> await httpClient.DeleteAsync($"games/{id}");
+
+/*		private GameSummary GetGameSummaryById(int id)
+		{ 
+			GameSummary? game = games.Find(game => game.Id == id);
+			ArgumentNullException.ThrowIfNull(game);
+			return game;
+		}
+	
+		private Genre GetGenreById(string? id)
+		{
+			ArgumentException.ThrowIfNullOrWhiteSpace(id);
+			return genres.Single(genre => genre.Id == int.Parse(id));
+		}
+		*/
+
 	}
 }

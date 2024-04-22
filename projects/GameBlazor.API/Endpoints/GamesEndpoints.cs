@@ -42,13 +42,16 @@ namespace GameBlazor.API.Endpoints
                                         .WithParameterValidation();  // 누겟패키지 사용
 
 
-            // GET: games
-            group.MapGet("/", async (GameStoreContext dbContext) => 
-                                                                                                await dbContext.Games 
-                                                                                                                        .Include(game => game.Genre)                                    // 게임의 장르 정보 로드
-                                                                                                                        .Select(game => game.ToGameSummaryDto())          // 게임 요약 데이터 DTO로 매핑
-                                                                                                                        .AsNoTracking()                                                             // 쿼리 결과 추적은 비활성화(읽기전용 쿼리, 데이터 변경 안할때)
-                                                                                                                        .ToListAsync());                                                           
+            // GET: /games
+            group.MapGet("/", async (GameStoreContext dbContext) => {
+                /*await Task.Delay(3000);  // 3초 딜레이*/
+
+                return await dbContext.Games
+                                        .Include(game => game.Genre)                                    // 게임의 장르 정보 로드
+                                        .Select(game => game.ToGameSummaryDto())          // 게임 요약 데이터 DTO로 매핑
+                                        .AsNoTracking()                                                             // 쿼리 결과 추적은 비활성화(읽기전용 쿼리, 데이터 변경 안할때)
+                                        .ToListAsync();
+            });                                                           
 
 
             // GET: games/1

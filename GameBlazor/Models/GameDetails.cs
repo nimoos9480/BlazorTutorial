@@ -1,6 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using GameBlazor.Converters;
+using StringConverter = GameBlazor.Converters.StringConverter;
 
-	namespace GameBlazor.Models
+namespace GameBlazor.Models
 {
 	public class GameDetails
 	{
@@ -11,6 +15,7 @@
 		public required string Name { get; set; }
 
 		[Required(ErrorMessage = "장르를 선택하세요.")]
+		[JsonConverter(typeof(StringConverter))]
 		public string? GenreId { get; set; }
 
 		[Range(1, 100)]

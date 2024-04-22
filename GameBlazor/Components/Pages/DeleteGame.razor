@@ -37,7 +37,7 @@
     public static string GetModalId(GameSummary? game)
     {
         ArgumentNullException.ThrowIfNull(game);
-        return $"deleteModal - {game.Id}";
+        return $"deleteModal-{game.Id}";
     }
 
     private async Task ConfirmAsync()

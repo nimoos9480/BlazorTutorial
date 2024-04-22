@@ -1,22 +1,23 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace GameBlazorConverters;
-
-public class StringConverter : JsonConverter<string?>
+namespace GameBlazor.Converters
 {
-	public override string? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+	public class StringConverter : JsonConverter<string?>
 	{
-		if (reader.TokenType == JsonTokenType.Number)
+		public override string? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
 		{
-			return reader.GetInt32().ToString();
+			if (reader.TokenType == JsonTokenType.Number)
+			{
+				return reader.GetInt32().ToString();
+			}
+
+			return reader.GetString();
 		}
 
-		return reader.GetString();
-	}
-
-	public override void Write(Utf8JsonWriter writer, string? value, JsonSerializerOptions options)
-	{
-		writer.WriteStringValue(value);
+		public override void Write(Utf8JsonWriter writer, string? value, JsonSerializerOptions options)
+		{
+			writer.WriteStringValue(value);
+		}
 	}
 }

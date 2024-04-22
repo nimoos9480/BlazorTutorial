@@ -37,7 +37,7 @@ namespace GameBlazor.Clients
 
 		/*public Genre[] GetGenres() => genres;*/
 		public async Task<Genre[]> GetGenresAsync()
-	   => await httpClient.GetFromJsonAsync<Genre[]>("genres") ?? [];
+									=> await httpClient.GetFromJsonAsync<Genre[]>("genres") ?? [];
 
 	}
 }
