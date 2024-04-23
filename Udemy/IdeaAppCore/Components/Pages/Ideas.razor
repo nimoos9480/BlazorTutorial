@@ -1,0 +1,105 @@
+﻿@page "/Ideas"
+@inject IIdeaRepository repository
+@rendermode InteractiveServer
+
+<h3>Ideas</h3>
+
+@if (ideas == null)
+{
+	<p><em>Loading...</em></p>
+}
+else if (ideas.Count == 0)
+{
+	<p><em>No data...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Note</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var idea in ideas)
+			{
+				<tr>
+					<td>@idea.Id</td>
+					<td>@idea.Note</td>
+				</tr>	
+			}
+		</tbody>
+	</table>
+}
+
+<input type="button" value="글쓰기" @onclick="btnCreate_Click" class="btn btn-primary" />
+
+@if (isShow)
+{
+	<div class="modal fade show" tabindex="-1" role="dialog" style="display:block;" id="myModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Modal title</h5>
+					@* 
+						자바스크립트 코드 사용
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="document.getElementById('myModal').style.display='none'"></button> *@
+
+					@* 블레이저 코드 사용_인라인으로 넣기 *@
+					@* <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="@(() => { isShow = false; })"></button> *@
+					@* 블레이저 코드 사용_클릭이벤트로 넣기 *@
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @onclick="btnClose_Click"></button>
+				</div>
+				<div class="modal-body">
+
+					<form>
+						<div class="form-group mb-3">
+							<label for="exampleInputEmail1" class="form-label">아이디어</label>
+							<input type="text" class="form-control" @bind="@idea.Note">
+						</div>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="btnClose_Click">Close</button>
+						<button type="button" class="btn btn-primary" @onclick="btnSave_Click">Submit</button>  
+						@*type="submit" 이면 재전송하는 기능이 있어서 일반 버튼으로 변경 *@
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+
+
+@code {
+	Idea idea = new Idea();
+
+	private bool isShow = false;
+
+	private List<Idea> ideas;
+
+	protected override async Task OnInitializedAsync()
+	{
+		ideas = await repository.GetIdeas();
+	}
+
+	private void btnCreate_Click()
+	{
+		isShow = true;
+	}
+
+	private void btnClose_Click()
+	{
+		isShow = false;
+		idea = new Idea(); // 입력한 아이디어 초기화
+	}
+
+	private async Task btnSave_Click()
+	{
+		await repository.AddIdea(idea);
+		isShow = false; // 창닫기
+		ideas = await repository.GetIdeas(); // 아이디어 전체 불러오기
+		idea = new Idea(); // 초기화
+	}
+}
