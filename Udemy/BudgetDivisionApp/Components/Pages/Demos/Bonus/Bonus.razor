@@ -1,0 +1,48 @@
+﻿@page "/Bonus"
+@rendermode InteractiveServer
+@inject IJSRuntime JS  
+@* IJSRuntime == 자바스크립트 코드 실행 목적 *@
+
+<h3>예산 나누기</h3>
+
+<div class="budget">
+	@foreach (var item in budgetItems)
+	{
+		<span>@item.Name : </span>
+		<span>@item.Amount.ToString("c0") </span>
+		<input type="range" 
+					max="@(item.Amount + Remaining)" step="1000" 
+					@bind="@item.Amount"
+					@bind:event="oninput"
+					style="width: @(100 *(item.Amount + Remaining) / totalBudget)%" />
+					@* input이벤트가 발생할 때 마다 적용되게 하는 바인딩 ==  @bind:event="oninput"   *@
+	}
+
+	<span>잔액 : </span>
+	<span>@Remaining.ToString("c0")</span> 
+</div>
+
+@* 잔액이 0보다 크면 버튼 비활성화 *@
+<button class="btn btn-primary" disabled="@(Remaining >0)" @onclick="btnSave_Click">완료</button>
+
+@code {
+	// 총 예산
+	decimal totalBudget = 1_000_000;
+
+	// 남은 양
+	public decimal Remaining => totalBudget - budgetItems.Sum(b => b.Amount);
+
+	// 예산 항목
+	List<BudgetItem> budgetItems = new List<BudgetItem>
+	{
+		new BudgetItem { Name = "총무팀"},
+		new BudgetItem { Name = "인사팀"},
+		new BudgetItem { Name = "마케팅팀"},
+	};
+
+	// 완료 메시지 출력
+	private void btnSave_Click()
+	{
+		JS.InvokeAsync<object>("alert", "예산 나누기 완료");
+	}
+}
