@@ -1,0 +1,22 @@
+﻿@page "/SearchBoxTest"
+@rendermode InteractiveServer
+@using BlazorApp.Components
+
+<h3>SearchboxTest</h3>
+
+@* 자식컴포넌트의 placeholder가 출력 *@
+<SearchBox></SearchBox>
+@* 자식컴포넌트의 placeholder를 대체해서 출력 *@
+<SearchBox placeholder="Search Query..." SearchQueryChanged="SearchQueryChanged"></SearchBox>
+
+<hr/>
+부모: @searchQuery
+
+@code {
+    private string searchQuery;
+    protected void SearchQueryChanged(string searchQuery)
+    {
+        this.searchQuery = searchQuery;
+    }
+}
+
