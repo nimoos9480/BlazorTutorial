@@ -1,9 +1,169 @@
 ﻿@page "/MatBlazorTest"
+@rendermode InteractiveServer
 <h3>MatBlazorTest</h3>
 
 <MatButton>Button</MatButton>
 <MatButton Outlined="true">Button</MatButton>
+<hr/>
+<h4>Normal ChipSet</h4>
 
-@code {
+<MatChipSet>
+    <MatChip Label="Plain"></MatChip>
+    <MatChip Label="LeadingIcon" LeadingIcon="favorite"></MatChip>
+    <MatChip Label="TrailingIcon" TrailingIcon="favorite"></MatChip>
+</MatChipSet>
+
+<h4 class="mt-3">Choice ChipSet</h4>
+
+<MatChipSet Choice="true" @bind-SelectedChip="selectedChip">
+    <MatChip Label="Male"></MatChip>
+    <MatChip Label="Female"></MatChip>
+    <MatChip Label="Rather not say"></MatChip>
+    <p class="mt-2">Your choice: @selectedChip?.Label</p>
+</MatChipSet>
+
+<h4 class="mt-3">Filter ChipSet</h4>
+
+<MatChipSet Filter="true" @bind-SelectedChips="selectedChips">
+    <MatChip Label="Wedges" IsCheckable="true"></MatChip>
+    <MatChip Label="Fries" IsCheckable="true"></MatChip>
+    <MatChip Label="Baby carrots" IsCheckable="true"></MatChip>
+    <MatChip Label="Roasted veggies" IsCheckable="true"></MatChip>
+    <MatChip Label="Salad" IsCheckable="true"></MatChip>
+    <MatChip Label="Cheese" IsCheckable="true"></MatChip>
+</MatChipSet>
+<p>
+    <b>Your selected: </b>
+    @foreach (var chip in selectedChips ?? new MatChip[0])
+    {
+        <span>@(chip.Label)&nbsp;</span>
+    }
+</p>
+
+@code
+{
+    MatChip selectedChip = null;
+    MatChip[] selectedChips = null;
+        }
+
+<h4 class="mt-3">Adding Removable Chips</h4>
+
+<MatChipSet @ref="chipset" @bind-SelectedChip="selectedChip">
+    <MatButton class="mr-2" @onclick="OnAddOption">Add a chip</MatButton>
+    @foreach (var option in labels)
+    {
+        <MatChip class="mt-1" Label=@option TrailingIcon="clear" TrailingIconClick="OnTrailingIconClick"></MatChip>
+    }
+</MatChipSet>
+
+@code
+{
+    MatChipSet chipset = null;
+    int counter = 1;
+    List<string> labels = new List<string>();
+
+    private void OnAddOption()
+    {
+        labels.Add($"Chip {counter++}");
+    }
+
+    private void OnTrailingIconClick(MatChip chip)
+    {
+        labels.Remove(chip.Label);
+        chipset?.UnregisterChip(chip); // <-- to avoid memleak
+    }
+        }
+
+
+<style>
+    .app-fab--absolute {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+    }
+</style>
+
+<MatFAB Class="@(isAbsolute ? "app-fab--absolute" : "")" Icon="@MatIconNames.Favorite" Label="Absolute Position" OnClick="@(_ => GoToAbsolute())"></MatFAB>
+
+<MatFAB Icon="@MatIconNames.Favorite"></MatFAB>
+
+<MatFAB Icon="@MatIconNames.Favorite" Label="Add to favorites"></MatFAB>
+
+<MatFAB Label="Custom Icon">
+    <MatIcon>favorite</MatIcon>
+</MatFAB>
+
+<MatFAB Icon="@MatIconNames.Favorite" Label="Mini" Mini="true"></MatFAB>
+
+@code
+{
+
+    bool isAbsolute = false;
+
+    void GoToAbsolute()
+    {
+    isAbsolute = !isAbsolute;
+    }
 
 }
+
+<hr />
+<style>
+    .my-button-class {
+        background: lightcoral !important;
+    }
+</style>
+
+<MatButton Class="my-button-class">Button with class</MatButton>
+<MatIconButton Class="my-button-class" Icon="@MatIconNames.Favorite"></MatIconButton>
+
+<hr />
+
+<MatThemeProvider Theme="@theme1">
+    <div class="mat-blazor-demo-theme-app-row">
+        <MatButton Icon="favorite">Text</MatButton>
+        <MatButton Raised="true" Icon="favorite">Raised</MatButton>
+        <MatButton Unelevated="true" Icon="favorite">Unelevated</MatButton>
+        <MatButton Outlined="true" Icon="favorite">Outlined</MatButton>
+        <MatButton Dense="true" Icon="favorite">Dense</MatButton>
+    </div>
+</MatThemeProvider>
+
+<MatThemeProvider Theme="@theme2">
+    <div class="mat-blazor-demo-theme-app-row">
+        <MatButton Icon="favorite">Text</MatButton>
+        <MatButton Raised="true" Icon="favorite">Raised</MatButton>
+        <MatButton Unelevated="true" Icon="favorite">Unelevated</MatButton>
+        <MatButton Outlined="true" Icon="favorite">Outlined</MatButton>
+        <MatButton Dense="true" Icon="favorite">Dense</MatButton>
+    </div>
+</MatThemeProvider>
+
+        @code
+        {
+
+    MatTheme theme1 = new MatTheme()
+        {
+            Primary = MatThemeColors.Orange._500.Value,
+            Secondary = MatThemeColors.BlueGrey._500.Value
+        };
+
+    MatTheme theme2 = new MatTheme()
+        {
+            Primary = "#b388ff",
+            Secondary = "#29b6f6"
+        };
+
+        }
+
+        <hr/>
+<MatSlideToggle @bind-Value="@Val1"></MatSlideToggle>
+<span>@Val1</span>
+<MatSlideToggle @bind-Value="@Val2"></MatSlideToggle>
+<span>@Val2</span>
+
+        @code
+        {
+    private bool Val1 = false;
+    private bool Val2 = true;
+        }
