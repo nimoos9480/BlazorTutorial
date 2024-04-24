@@ -1,0 +1,32 @@
+﻿<h3>FrmChild</h3>
+@inject IJSRuntime js
+
+
+부모에서 전달된 값 : @FromParent
+
+<input type="button" value="자식에서 호출" @onclick="btnChild_Click" />
+
+@code {
+	[Parameter]
+	public int FromParent { get; set; }
+
+	[Parameter]
+	public Action OnParentcall { get; set; }
+
+	[Parameter]
+	public Action<int> PageIndexChanged { get; set; }
+
+	protected void btnChild_Click()
+	{
+		js.InvokeAsync<object>("alert", "btnChild_Click 호출됨");
+		OnParentcall?.Invoke(); // OnParentcall이 null이 아니면 부모에서 전송된 메서드 호출(Callback 함수)
+	}
+
+	protected void pageButtonClicked(int pageNumber)
+	{
+		PageIndexChanged?.Invoke(pageNumber - 1);
+	}
+}
+
+<input type="button" value="1페이지" @onclick="@(() => pageButtonClicked(1))" />
+<input type="button" value="2페이지" @onclick="@(() => pageButtonClicked(2))" />
