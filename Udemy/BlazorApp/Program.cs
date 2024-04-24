@@ -1,6 +1,7 @@
 using BlazorApp.Components;
 using BlazorApp.Components.Account;
 using BlazorApp.Data;
+using MatBlazor;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,17 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+builder.Services.AddScoped<HttpClient>(); // Matblazor를 위해 추가
+
+builder.Services.AddMatToaster(config =>
+{
+    config.Position = MatToastPosition.BottomRight;
+    config.PreventDuplicates = true;
+    config.NewestOnTop = true;
+    config.ShowCloseButton = true;
+    config.MaximumOpacity = 95;
+    config.VisibleStateDuration = 3000;
+});
 
 builder.Services.AddAuthentication(options =>
 	{
