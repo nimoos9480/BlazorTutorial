@@ -3,7 +3,7 @@
 namespace BlazorApp.Services
 {
     public class FileUploadService : IFileUploadService    // IFileUploadService 상속
-    {
+	{
         private readonly IWebHostEnvironment _environment;
 
         // IWebHostEnvironment은 파일 업로드 서비스에서 환경을 읽거나 파일 경로를 구성하는 데 사용 => 의존성 주입
@@ -13,11 +13,11 @@ namespace BlazorApp.Services
         }
         public async Task UploadAsync(IFileListEntry fileEntry) // 파일 업로드 기능 구현
         {
-            // 파일 업로드 경로 결정(루트경로, 저장될위치, 파일이름)
-            var path = Path.Combine(_environment.WebRootPath, "Upload", fileEntry.Name);
+			// 파일 업로드 경로 결정(/wwwrot 경로, 저장될위치(폴더), 파일이름)
+			var path = Path.Combine(_environment.WebRootPath, "Upload", fileEntry.Name);
 
-            // 메모리 스트림 생성해서 복사
-            var ms = new MemoryStream();
+			// 메모리 스트림 생성해서 복사
+			var ms = new MemoryStream();
             await fileEntry.Data.CopyToAsync(ms);
 
             // 업로드된 파일 저장(경로, 파일생성, 액세스권한)

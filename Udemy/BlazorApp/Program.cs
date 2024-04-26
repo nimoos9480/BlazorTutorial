@@ -17,6 +17,7 @@ builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
 builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+
 builder.Services.AddScoped<IFileUploadService, FileUploadService>(); // 파일업로드 위해 주입	
 
 builder.Services.AddScoped<HttpClient>(); // Matblazor를 위해 추가

@@ -1,6 +1,7 @@
 ﻿using BlazorApp.Services;
 using BlazorInputFile;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace BlazorApp.Components.Pages
 {
@@ -16,7 +17,8 @@ namespace BlazorApp.Components.Pages
         { 
             // 선택된 파일 배열에 담기
             this.selectedFiles = files;
-        }
+		}
+	
 		protected async void UploadClick()
 		{
 			var file = selectedFiles.FirstOrDefault();
