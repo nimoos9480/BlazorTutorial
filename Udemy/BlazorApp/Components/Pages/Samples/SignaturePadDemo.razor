@@ -1,0 +1,22 @@
+﻿@page "/SignaturePadDemo"
+@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+
+<h3>SignaturePadDemo</h3>
+
+<canvas width="300" height="200" id="theCanvas" style="border: 1px solid red;"></canvas>
+
+
+@code {
+	// protected override async Task OnInitializedAsync()
+	// {
+	// 	// id값 넣어주기
+	// 	await JSRuntime.InvokeAsync<object>("BlazorSignaturePad", "theCanvas");
+	// } //에러남
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		// id값 넣어주기
+		await JSRuntime.InvokeAsync<object>("BlazorSignaturePad", "theCanvas");
+	}
+}
